@@ -1,0 +1,1 @@
+The Landing Page is deployed [Here](https://gdgc-task-round-backend-navy.vercel.app/listing/)
