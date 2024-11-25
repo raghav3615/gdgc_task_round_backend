@@ -1,14 +1,21 @@
 const express = require('express');
-const router = express.Router();
+const bodyParser = require('body-parser');
 
-let listings = []; 
+// Initialize Express App
+const app = express();
+app.use(bodyParser.json());
+
+// In-memory listings storage
+let listings = [];
 let idCounter = 1;
 
-router.get('/', (req, res) => {
+// 1. GET /listing - Get all items
+app.get('/listing', (req, res) => {
     res.json({ data: listings });
 });
 
-router.get('/:id', (req, res) => {
+// 2. GET /listing/:id - Get an item by ID
+app.get('/listing/:id', (req, res) => {
     const { id } = req.params;
     const item = listings.find(listing => listing.id === id);
 
@@ -19,7 +26,8 @@ router.get('/:id', (req, res) => {
     res.json({ data: item });
 });
 
-router.post('/', (req, res) => {
+// 3. POST /listing - Create a new item
+app.post('/listing', (req, res) => {
     const { title, description, seller, rating = 0 } = req.body;
 
     if (!title || !description || !seller) {
@@ -39,7 +47,8 @@ router.post('/', (req, res) => {
     res.status(201).json({ data: newItem });
 });
 
-router.put('/:id', (req, res) => {
+// 4. PUT /listing/:id - Update an item
+app.put('/listing/:id', (req, res) => {
     const { id } = req.params;
     const { title, description, rating } = req.body;
 
@@ -56,9 +65,9 @@ router.put('/:id', (req, res) => {
     res.json({ data: item });
 });
 
-router.delete('/:id', (req, res) => {
+// 5. DELETE /listing/:id - Delete an item
+app.delete('/listing/:id', (req, res) => {
     const { id } = req.params;
-
     const index = listings.findIndex(listing => listing.id === id);
 
     if (index === -1) {
@@ -66,8 +75,8 @@ router.delete('/:id', (req, res) => {
     }
 
     listings.splice(index, 1);
-
     res.status(200).send("OK");
 });
 
-module.exports = router;
+// Export the function for Vercel to use
+module.exports = app;

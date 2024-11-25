@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "api/listing.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/listing/(.*)",
+        "dest": "/api/listing.js"
+      }
+    ]
+  }
+  
